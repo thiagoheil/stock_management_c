@@ -67,7 +67,7 @@ Produto *carregarBancoDados(int *tamanho)
 
         if (vetorProdutos == NULL)
         {
-            printf("Erro na realocação de memória.\n");
+            printf("Erro na realoca��o de mem�ria.\n");
             exit(1);
         } else {
             vetorProdutos[*tamanho - 1].id = id;
@@ -86,14 +86,15 @@ void cadastrarProduto(int ultimoId)
     FILE *arquivo = abrirArquivo("dados.txt", "a");
 
     int quantidade;
-    printf("Quantos produtos você quer cadastrar?\n");
+    printf("Quantos produtos voc� quer cadastrar?\n");
     scanf("%d", &quantidade);
     if (quantidade <= 0) {
-    printf("Quantidade inválida. Tente novamente.\n");
+    printf("Quantidade inv�lida. Tente novamente.\n");
     return;
     }
 
-    for(int i = 0; i < quantidade; i++)
+	int i;
+    for(i = 0; i < quantidade; i++)
     {
         getchar();
         Produto produto;
@@ -120,35 +121,92 @@ void cadastrarProduto(int ultimoId)
     fecharArquivo(arquivo);
 }
 
-void alterarProduto()
-{
-    printf("Opção 3 - Alterar produto\n");
-    // Adicionar lógica
-}
+
 
 void excluirProduto()
 {
-    printf("Opção 4 - Excluir produto\n");
-    // Adicionar lógica
+    printf("Op��o 4 - Excluir produto\n");
+    // Adicionar l�gica
 }
 
 void listarProdutos(Produto *vetorProdutos, int tamanho)
 {
-    for (int i = 0; i < tamanho; i++)
+	//verificar caso de exclusao de produtos no meio da listagem
+	int i;
+    for (i = 0; i < tamanho; i++)
     {
         printf("ID: %d, Nome: %s, Quantidade: %d, Valor: %.2f\n", vetorProdutos[i].id, vetorProdutos[i].nome, vetorProdutos[i].quantidade, vetorProdutos[i].valor);
     }
 }
 
+// void listaProdutoId(int id) {
+//     int i;
+//     printf("ID: %d, Nome: %s, Quantidade: %d, Valor: %.2f\n", vetorProdutos)
+// }
+
 void listarMenu()
 {
-    printf("\n=== Menu de Navegação ===\n");
+    printf("\n=== Menu de Navega��o ===\n");
     printf("1 - Carregar Banco de Dados\n");
     printf("2 - Cadastrar produto\n");
     printf("3 - Alterar produto\n");
     printf("4 - Excluir produto\n");
     printf("5 - Listar produtos\n");
     printf("0 - Sair\n");
+}
+
+void alterarProduto()
+{
+    printf("Opção 3 - Alterar produto\n");
+
+    int ultimoId;
+
+    printf("======= LISTAGEM DE PRODUTOS =======\n");
+
+    Produto *vetorProdutosListagem = carregarBancoDados(&ultimoId);
+    listarProdutos(vetorProdutosListagem, ultimoId);
+
+    printf("=====================================\n");
+
+    printf("Digite o id do produto que gostaria de alterar:\n");
+
+    int productId;
+    scanf("%d", &productId);
+
+     // Procura o produto pelo index fornecido
+    int index = -1;
+    int i;
+    for ( i = 0; i < ultimoId; i++)
+    {
+        if (vetorProdutosListagem[i].id == productId)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1)
+    {
+        printf("Produto com ID %d não encontrado.\n", productId);
+        return;
+    }
+
+    printf("Produto selecionado:\n");
+    printf("ID: %d, Nome: %s, Quantidade: %d, Valor: %.2f\n", vetorProdutosListagem[index].id, vetorProdutosListagem[index].nome, vetorProdutosListagem[index].quantidade, vetorProdutosListagem[index].valor);
+
+    printf("Informe qual o atributo que gostaria de alterar:\n");
+    printf("1 - Nome\n");
+    printf("2 - Quantidade\n");
+    printf("3 - Valor\n");
+
+    
+
+
+
+    // FILE *arquivo = abrirArquivo("dados.txt", "a");
+    
+
+    // Adicionar l�gica
 }
 
 int main()
@@ -162,37 +220,39 @@ int main()
         // Exibindo o menu
         listarMenu();
 
-        // Solicitando a escolha do usuário
-        printf("Escolha uma opção: ");
+        // Solicitando a escolha do usu�rio
+        printf("Escolha uma op��o: ");
         scanf("%d", &opcao);
 
-        // Executando a opção escolhida
+        // Executando a op��o escolhida
         switch (opcao)
         {
-        // case 1:
-        //     carregarBancoDados();
-        //     break;
-        case 2:
-            Produto *vetorProdutos = carregarBancoDados(&ultimoId);
+         case 1:
+            //  carregarBancoDados();
+            //  break;
+        case 2: {
+             Produto *vetorProdutos = carregarBancoDados(&ultimoId);
             cadastrarProduto(ultimoId);
             free(vetorProdutos);
             break;
+        } 
         case 3:
             alterarProduto();
             break;
         case 4:
             excluirProduto();
             break;
-        case 5:
+        case 5: {
             Produto *vetorProdutosListagem = carregarBancoDados(&ultimoId);
             listarProdutos(vetorProdutosListagem, ultimoId);
             free(vetorProdutosListagem);
             break;
+        }
         case 0:
-            printf("Saindo do programa. Até mais!\n");
+            printf("Saindo do programa. At� mais!\n");
             break;
         default:
-            printf("Opção inválida. Tente novamente.\n");
+            printf("Op��o inv�lida. Tente novamente.\n");
         }
     } while (opcao != 0);
 
