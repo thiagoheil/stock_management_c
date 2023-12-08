@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <string.h>
+// JULIA E THIAGO
 
 typedef struct
 {
